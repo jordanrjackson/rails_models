@@ -10,13 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_13_205854) do
+ActiveRecord::Schema.define(version: 2018_11_13_223758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "addresses", force: :cascade do |t|
+    t.string "state"
+    t.string "city"
+    t.string "zip"
+    t.bigint "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_addresses_on_person_id"
+  end
+
+  create_table "notes", force: :cascade do |t|
+    t.text "body"
+    t.bigint "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_notes_on_person_id"
+  end
+
   create_table "people", force: :cascade do |t|
-    t.string "name"
+    t.string "first_name"
     t.integer "age"
     t.string "hair_color"
     t.string "eye_color"
@@ -24,6 +42,10 @@ ActiveRecord::Schema.define(version: 2018_11_13_205854) do
     t.string "vital_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "last_name"
+    t.boolean "friend"
   end
 
+  add_foreign_key "addresses", "people"
+  add_foreign_key "notes", "people"
 end
